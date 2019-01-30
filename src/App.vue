@@ -36,9 +36,12 @@ export default {
     }
   },
   created(){
-    console.log(this.$route);
     this.title = this.$route.name;
+    //M.AutoInit();
   },
+   mounted(){
+
+   },
   methods: {
     // openStart () {
     //   document.querySelector('ion-menu-controller').open('start')

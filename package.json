@@ -16,6 +16,7 @@
     "ionicons": "^4.5.5",
     "localforage": "^1.7.3",
     "localforage-cordovasqlitedriver": "^1.7.0",
+    "materialize-css": "^1.0.0-rc.2",
     "vue": "^2.5.2",
     "vue-chartjs": "^3.4.0",
     "vue-router": "^3.0.1",

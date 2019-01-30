@@ -21,8 +21,8 @@
       return {
         links: [
           {icon: 'tv', title: 'Dashboard', route: '/'},
-          {icon: 'calendar', title: 'HelloWorld', route: '/HelloWorld'},
-          {icon: 'input', title: 'Inputs', route: '/inputs/'},
+          {icon: 'calendar', title: 'Monthly Expense', route: '/MonthlyExpense'},
+          {icon: 'input', title: 'Inputs', route: '/AddorEditMonthlyExpense'},
           {icon: 'layers', title: 'Templates', route: '/templates'},
         ]
       }

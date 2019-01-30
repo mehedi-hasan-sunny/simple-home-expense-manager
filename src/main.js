@@ -6,9 +6,12 @@ import router from './router'
 import Ionic from '@ionic/vue';
 
 
+// window.$ = require('https://code.jquery.com/jquery-3.3.1.min.js');
 
 // require('ionicons/dist/css/ionicons.min.css');
 require('@ionic/core/css/ionic.bundle.css');
+require('materialize-css/dist/css/materialize.min.css');
+window.M = require('materialize-css');
 
 import LineChart from './components/charts/Line';
 import BarChart from './components/charts/Bar';

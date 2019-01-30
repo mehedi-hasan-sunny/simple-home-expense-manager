@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import DashBoard from '../views/Dashboard'
-import HelloWorld from '@/components/HelloWorld'
+import MonthlyExpense from '../views/MonthlyExpense'
+import AddorEditMonthlyExpense from '../views/AddorEditMonthlyExpense'
 
 Vue.use(Router)
 
@@ -13,9 +14,14 @@ export default new Router({
       component: DashBoard
     },
     {
-      path: '/HelloWorld',
-      name: 'HelloWorld',
-      component: HelloWorld
+      path: '/MonthlyExpense',
+      name: 'Monthly Expense',
+      component: MonthlyExpense
+    },
+    {
+      path: '/AddorEditMonthlyExpense',
+      name: 'Add Monthly Expense',
+      component: AddorEditMonthlyExpense
     }
   ]
 })
