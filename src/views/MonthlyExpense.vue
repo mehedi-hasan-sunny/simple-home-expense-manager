@@ -2,27 +2,24 @@
   <ion-page>
     <ion-content class="content">
 
-      <ion-card class="card-rounded m-2" v-for="(post,index) in posts" v-bind:key="post+index">
-        <ion-card-content class="p-1">
-          {{post}}
-        </ion-card-content>
+      <ion-card class="card-rounded m-2" v-for="post in posts" v-bind:key="post.bill">
+        <ion-card-header>
+          <ion-card-subtitle> {{post.title}}</ion-card-subtitle>
+          <ion-card-title> {{post.bill}}<span class="badge white-text rounded" :class="[post.status? 'green ' : 'red']">{{post.status ? 'Paid' : 'Due' }}</span></ion-card-title>
+        </ion-card-header>
       </ion-card>
 
-      <ion-item>
-        <ion-input :value="name" ref="newTodoItem" @input="updateTodoName" placeholder="Todo Name"></ion-input>
-      </ion-item>
-
-
       <!-- Modal Structure -->
-      <div id="modal1" class="modal">
-        <div class="modal-content">
-          <AddorEditMonthlyExpense></AddorEditMonthlyExpense>
-        </div>
-      </div>
 
-      <a class="modal-trigger" href="#modal1">
-      <ion-fab-button class="todo-fab" @click="addTodo">
-        <ion-icon name="checkmark"></ion-icon>
+      <div id="modal1" class="modal bottom-sheet modal-form">
+        <div class="modal-content">
+          <AddorEditMonthlyExpense :posts.sync="posts"></AddorEditMonthlyExpense>
+        </div>
+
+      </div>
+      <a class="modal-trigger" href="#modal1" @click="hideBottomNav()">
+      <ion-fab-button class="todo-fab">
+        <ion-icon name="add"></ion-icon>
       </ion-fab-button>
 
       </a>
@@ -44,53 +41,48 @@
     },
     data () {
       return {
-        posts: ['eat','sleep'],
+        posts: [],
         name:'',
-        isModalVisible:false,
-        showModal: false
       }
     },
     created() {
-
       let instance = this;
-
       storage.get('subreddit').then((value) => {
-
         if(value != null){
-          instance.posts = JSON.parse(value);
+          let data = JSON.parse(value);
+          if (data.length>0)
+          {
+            instance.posts = data;
+          }
+          else {
+            instance.posts.push(data);
+          }
         }
       });
+
 
     },
     mounted(){
       M.AutoInit();
+      var instance = M.Modal.init(document.querySelector('#modal1'),
+        {
+          onCloseStart: function () {
+            document.querySelector('#btm-hider').removeAttribute("style");
+          }
+        }
+      );
     },
     methods: {
-      showModal() {
-        this.isModalVisible = true;
-      },
-      closeModal() {
-        this.isModalVisible = false;
-      },
-      switchSubreddit(subreddit){
 
-        this.posts.push(subreddit);
-
-        storage.set('subreddit', JSON.stringify(this.posts));
+      hideBottomNav(){
+        document.querySelector('#btm-hider').setAttribute("style", "display:none;");
       },
-      updateTodoName() {
-        this.name = this.$refs.newTodoItem.value
-      },
-      addTodo(){
-        this.switchSubreddit(this.name);
-        this.name = null;
-      }
     }
   }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss">
   .todo-fab {
     position: fixed;
     bottom: 25px;
@@ -99,5 +91,10 @@
   }
   .m-2{
     margin: 20px;
+  }
+  .modal-form{
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+    max-height: 85% !important;
   }
 </style>

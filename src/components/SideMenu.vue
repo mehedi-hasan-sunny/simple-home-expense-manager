@@ -23,7 +23,7 @@
           {icon: 'tv', title: 'Dashboard', route: '/'},
           {icon: 'calendar', title: 'Monthly Expense', route: '/MonthlyExpense'},
           {icon: 'input', title: 'Inputs', route: '/AddorEditMonthlyExpense'},
-          {icon: 'layers', title: 'Templates', route: '/templates'},
+          {icon: 'layers', title: 'Tab', route: '/tab'},
         ]
       }
     },

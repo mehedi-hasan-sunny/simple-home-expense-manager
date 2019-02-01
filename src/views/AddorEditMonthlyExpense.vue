@@ -1,104 +1,80 @@
 <template>
- <div>
-   <ion-item>
-     <ion-label>Title</ion-label>
-     <ion-input :value="monthlyExpense.title" @input="updateTitleProperty('title')" placeholder="Todo Name" ref="title"></ion-input>
-   </ion-item>
-   <ion-item>
-     <ion-input :value="monthlyExpense.bill" @input="updateTitleProperty('bill')" placeholder="Todo Name" ref="bill"></ion-input>
-   </ion-item>
+  <div>
+    <div style="margin-bottom: 35px;">
+      <div class="input-field">
+        <input id="title" type="text" v-model="monthlyExpense.title">
+        <label for="title">Title</label>
+      </div>
+      <div class="input-field">
+        <input id="bill" type="text" v-model="monthlyExpense.bill">
+        <label for="bill">Bill</label>
+      </div>
+      <div class="switch" padding>
+        <label style="font-size: 1rem">
+          <span class="red-text text-accent-3">Due</span>
+          <input type="checkbox" v-model="monthlyExpense.status">
+          <span class="lever"></span>
+          <span class="indigo-text text-accent-2">Paid</span>
+        </label>
+      </div>
+    </div>
 
-   <div class="input-field">
-     <input id="first_name" type="text" v-model="monthlyExpense.title">
-     <label for="first_name">Title</label>
-   </div>
-   <div class="switch" padding>
-     <label>
-       Unpaid
-       <input type="checkbox" v-model="monthlyExpense.status"  @change="toggle">
-       <span class="lever"></span>
-       Paid
-     </label>
-   </div>
-
-
-
-   <!--<ion-item>-->
-   <!--<ion-label >Paid</ion-label>-->
-   <!--<ion-toggle slot="end" :value="monthlyExpense.status" @click.prevent="toggle()" @change="toggle" name="status"></ion-toggle>-->
-   <!--</ion-item>-->
-
-
-
-   <ion-item>
-     {{monthlyExpense.title}} <br>
-     {{monthlyExpense.bill}} <br>
-     {{monthlyExpense.status}}
-
-   </ion-item>
-   <ion-fab-button class="todo-fab">
-     <ion-icon name="checkmark"></ion-icon>
-   </ion-fab-button>
- </div>
+    <ion-fab-button @click="saveMonthlyExpenseData()" class="todo-fab">
+      <ion-icon name="checkmark"></ion-icon>
+    </ion-fab-button>
+  </div>
 </template>
 
 <script>
   import Storage from '../services/storage';
+
   const storage = new Storage();
   export default {
     name: "AddorEditMonthlyExpense",
-    data(){
-      return{
+    data() {
+      return {
         monthlyExpense: {
-          title: 'dasdasd',
+          title: null,
           bill: null,
           status: false,
         }
       }
     },
-    mounted(){
+    mounted() {
       M.AutoInit();
       M.updateTextFields();
-      // document.addEventListener('DOMContentLoaded', function() {
-      //   var elems = document.querySelectorAll('#modal');
-      //   console.log(elems)
-      //   var instances = M.Modal.init(elems, options);
-      // });
-      // $(document).ready(function(){
-      //   $('.modal').modal();
-      // });
-
     },
-    methods:{
-      clik(){
-        //var elems = document.querySelectorAll('.modal');
-        //M.Modal.init('#modal1', null)
-        //console.log(elems,'hi')
-        // document.addEventListener('DOMContentLoaded', function() {
-        //   var elems = document.querySelectorAll('#modal');
-        //   console.log(elems)
-        //   var instances = M.Modal.init(elems, options);
-        // });
-        // $
+    methods: {
+      saveToStorage(data){
+        storage.set('subreddit', JSON.stringify(data)).then((value)=>{
+          let modal = M.Modal.getInstance(document.querySelector('#modal1'));
+          modal.close();
+          this.$emit('update:posts', JSON.parse(value))
+        });
       },
-
-      toggle(){
-        //this.monthlyExpense.status = !this.monthlyExpense.status;
-        console.log('clicked',this.monthlyExpense.status)
+      saveMonthlyExpenseData() {
+        let previousData = [];
+        storage.get('subreddit').then((value) => {
+          console.log(value,'hi');
+          if (value != null) {
+            let data = JSON.parse(value);
+            if (data.length > 0) {
+              previousData = data;
+            } else {
+              previousData.push(data);
+            }
+          }
+          previousData.push(this.monthlyExpense)
+          this.saveToStorage(previousData);
+        });
 
       },
       updateTitleProperty(value) {
         this.monthlyExpense[value] = this.$refs[value].value
 
 
-        console.log(value,this.$refs[value].value)
+        console.log(value, this.$refs[value].value)
         console.log(this.$name)
-      },
-      // updateTitleProperty() {
-      //   this.monthlyExpense.title = this.$refs.title.value
-      // },
-      addMonthlyExpense(value){
-        storage.set('monthlyExpense', JSON.stringify(this.posts));
       },
     }
   }

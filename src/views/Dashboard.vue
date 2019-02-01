@@ -48,9 +48,7 @@
 </script>
 
 <style scoped>
-  .card-rounded {
-    border-radius: 10px;
-  }
+
 
   .p-1 {
     padding: 5px;
